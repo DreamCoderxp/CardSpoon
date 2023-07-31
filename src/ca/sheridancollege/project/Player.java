@@ -45,5 +45,28 @@ public abstract class Player {
      * with logic to play your game.
      */
     public abstract void play();
+    public abstract void play(Deck deck);
 
+    /**
+     * Method to draw a card from the deck and add it to the player's hand.
+     *
+     * @param deck the deck of cards to draw from.
+     * @return the drawn card.
+     */
+    protected Card drawCard(Deck deck) {
+        Card drawnCard = deck.drawCard();
+        System.out.println(getName() + " draws: " + drawnCard);
+        return drawnCard;
+    }
+
+    /**
+     * Method to discard a card from the player's hand.
+     *
+     * @return the discarded card.
+     */
+    protected Card discardCard() {
+        // Implement discard logic here (e.g., prompting the player to choose a card to discard).
+        // Return the discarded card.
+        return null;
+    }
 }
