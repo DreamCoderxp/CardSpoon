@@ -6,7 +6,7 @@ package ca.sheridancollege.project;
 
 /**
  *
- * @author gurle
+ * @author Gurleen Kaur
  */
 public class Main {
     public static void main(String[] args) {

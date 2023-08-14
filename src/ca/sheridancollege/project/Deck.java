@@ -6,7 +6,7 @@ package ca.sheridancollege.project;
 
 /**
  *
- * @author gurle
+ * @author Gurleen Kaur
  */
 
 import java.util.ArrayList;
