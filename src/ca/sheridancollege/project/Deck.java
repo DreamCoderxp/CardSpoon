@@ -40,4 +40,3 @@ public class Deck extends GroupOfCards {
         return false;
     }
 }
-
