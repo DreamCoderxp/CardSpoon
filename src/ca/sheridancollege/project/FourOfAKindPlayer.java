@@ -9,7 +9,7 @@ package ca.sheridancollege.project;
  * @author Gurleen Kaur
  */
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Collections;
 
 /**
  * A class that represents a player in the Four of a Kind card game.
@@ -19,8 +19,7 @@ import java.util.Iterator;
  * The player class will also have a method to check if they have four of a kind cards.
  * Each player's turn is managed in the FourOfAKindGame class.
  */
-public class FourOfAKindPlayer extends Player {
-
+class FourOfAKindPlayer extends Player {
     private ArrayList<Card> hand;
 
     public FourOfAKindPlayer(String name) {
@@ -28,31 +27,23 @@ public class FourOfAKindPlayer extends Player {
         hand = new ArrayList<>();
     }
 
-    @Override
-    public void play() {
-        // The player's turn is managed in the FourOfAKindGame class
-    }
-
     public void addCardToHand(Card card) {
         hand.add(card);
     }
 
-    public void discardCard(String discardedCardRank) {
-        Iterator<Card> iterator = hand.iterator();
-        while (iterator.hasNext()) {
-            Card card = iterator.next();
-            if (card.getRank().equals(discardedCardRank)) {
-                iterator.remove();
-                break;
-            }
-        }
+    public void discardCard(Card discardedCard) {
+        hand.remove(discardedCard);
     }
 
     public boolean hasFourOfAKind() {
+        if (hand.size() < 4) {
+            return false;
+        }
+
         for (int i = 0; i < hand.size(); i++) {
             int count = 1;
             for (int j = i + 1; j < hand.size(); j++) {
-                if (hand.get(i).getRank().equals(hand.get(j).getRank())) {
+                if (hand.get(i).getRank() == hand.get(j).getRank()) {
                     count++;
                 }
             }
@@ -66,10 +57,4 @@ public class FourOfAKindPlayer extends Player {
     public ArrayList<Card> getHand() {
         return hand;
     }
-
-    @Override
-    public void play(Deck deck) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
 }
-

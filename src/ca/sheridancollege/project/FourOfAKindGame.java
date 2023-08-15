@@ -4,47 +4,116 @@
  */
 package ca.sheridancollege.project;
 
+import java.util.ArrayList;
+import java.util.Scanner;
+
 /**
  *
  * @author Gurleen Kaur
  */
 
-import java.util.ArrayList;
-import java.util.Scanner;
-
 /**
  * A class representing the Four of a Kind card game.
  * It extends the Game class and contains the game logic for playing the Four of a Kind card game.
  */
+
 public class FourOfAKindGame extends Game {
 
-    private final Deck deck;
-    private final ArrayList<FourOfAKindPlayer> players;
+   private Deck deck = new Deck();
+    private final ArrayList<FourOfAKindPlayer> players = new ArrayList<>();
 
-    public FourOfAKindGame(String name) {
-        super(name);
-        deck = new Deck();
-        players = new ArrayList<>();
+    public FourOfAKindGame(int numPlayers) {
+        super("Four of a Kind");
+        initializePlayers(numPlayers);
     }
 
-    public void addPlayer(FourOfAKindPlayer player) {
-        players.add(player);
-    }
-
-    @Override
-    public void play(Deck deck) {
-        // Implement game logic here for Four of a Kind game.
-        // This method should handle the overall flow of the game, including dealing cards, player turns, and game end conditions.
-    }
-
-    @Override
-    public void declareWinner() {
-        // Implement declareWinner logic here for Four of a Kind game.
-        // This method should determine the winner and display the result at the end of the game.
+    private void initializePlayers(int numPlayers) {
+        Scanner scanner = new Scanner(System.in);
+        for (int i = 0; i < numPlayers; i++) {
+            System.out.print("Enter player " + (i + 1) + " name: ");
+            String name = scanner.nextLine();
+            players.add(new FourOfAKindPlayer(name));
+        }
     }
 
     @Override
     public void play() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        dealInitialCards();
+
+        while (!gameOver()) {
+            for (FourOfAKindPlayer player : players) {
+                performPlayerTurn(player);
+                if (player.hasFourOfAKind()) {
+                    declareWinner(player);
+                    return;
+                }
+            }
+        }
+        declareWinner(null);
+    }
+
+    private void dealInitialCards() {
+        for (FourOfAKindPlayer player : players) {
+            for (int i = 0; i < 4; i++) {
+                Card drawnCard = deck.drawCard();
+                player.addCardToHand(drawnCard);
+            }
+        }
+    }
+
+    private void performPlayerTurn(FourOfAKindPlayer player) {
+        System.out.println(player.getName() + "'s turn:");
+        Card drawnCard = deck.drawCard();
+        player.addCardToHand(drawnCard);
+        System.out.println(player.getName() + " draws: " + drawnCard);
+        System.out.print(player.getName() + ", do you want to keep the card? (yes/no): ");
+        Scanner scanner = new Scanner(System.in);
+        String decision = scanner.nextLine();
+        if (decision.equalsIgnoreCase("no")) {
+            System.out.print(player.getName() + ", which card do you want to discard? (enter card index): ");
+            int cardIndex = scanner.nextInt();
+            if (cardIndex >= 0 && cardIndex < player.getHand().size()) {
+                Card discardedCard = player.getHand().get(cardIndex);
+                player.discardCard(discardedCard);
+                deck.addCardToDiscardPile(discardedCard);
+            }
+        }
+    }
+
+    private boolean gameOver() {
+        return deck.isEmpty();
+    }
+
+    private void declareWinner(FourOfAKindPlayer player) {
+        if (player != null) {
+            System.out.println(player.getName() + " wins! Four of a kind!");
+        } else {
+            System.out.println("The game is over. No winner.");
+        }
+    }
+
+    @Override
+    public void declareWinner() {
+        // Find the player with four of a kind (if any)
+        FourOfAKindPlayer winner = null;
+        for (FourOfAKindPlayer player : players) {
+            if (player.hasFourOfAKind()) {
+                winner = player;
+                break;
+            }
+        }
+
+        if (winner != null) {
+            System.out.println("The winner is: " + winner.getName() + " with four of a kind!");
+        } else {
+            System.out.println("No winner. Game over.");
+        }
+    }
+
+    @Override
+    public void play(Deck deck) {
+        System.out.println("Playing with a custom deck.");
+        this.deck = deck;
+        play();
     }
 }

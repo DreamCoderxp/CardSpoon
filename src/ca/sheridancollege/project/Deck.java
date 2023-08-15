@@ -15,28 +15,41 @@ import java.util.Collections;
 /**
  * A class representing a deck of cards for the Four of a Kind card game.
  */
-public class Deck extends GroupOfCards {
+public class Deck {
+    private final ArrayList<Card> drawPile = new ArrayList<>();
+    private final ArrayList<Card> discardPile = new ArrayList<>();
 
     public Deck() {
-        super(52); // A standard deck of cards has 52 cards
         initializeDeck();
         shuffle();
     }
 
     private void initializeDeck() {
-        // Implement the logic to populate the deck with all 52 standard playing cards.
-        // You can create the appropriate card objects and add them to the cards list.
+        for (CardSuit suit : CardSuit.values()) {
+            for (CardRank rank : CardRank.values()) {
+                Card card = new Card(rank, suit);
+                drawPile.add(card);
+            }
+        }
     }
 
     public Card drawCard() {
-        // Implement the logic to draw the top card from the deck.
-        // Return the drawn card.
-        return null;
+        if (drawPile.isEmpty()) {
+            System.out.println("Draw pile is empty.");
+            return null;
+        }
+        return drawPile.remove(drawPile.size() - 1);
+    }
+
+    public void addCardToDiscardPile(Card card) {
+        discardPile.add(card);
     }
 
     public boolean isEmpty() {
-        // Implement the logic to check if the deck is empty (no more cards to draw).
-        // Return true if the deck is empty, false otherwise.
-        return false;
+        return drawPile.isEmpty();
+    }
+
+    private void shuffle() {
+        Collections.shuffle(drawPile);
     }
 }

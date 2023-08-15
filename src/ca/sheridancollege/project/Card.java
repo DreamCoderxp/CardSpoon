@@ -12,19 +12,21 @@ package ca.sheridancollege.project;
  * @author dancye
  * @modifier Gurleen Kaur
  */
-public abstract class Card {
-    //default modifier for child classes
+public class Card {
+    private final CardRank rank;
+    private final CardSuit suit;
 
-    /**
-     * Students should implement this method for their specific children classes
-     *
-     * @return a String representation of a card. Could be an UNO card, a regular playing card etc.
-     */
-    @Override
-    public abstract String toString();
-
-    Object getRank() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public Card(CardRank rank, CardSuit suit) {
+        this.rank = rank;
+        this.suit = suit;
     }
 
+    @Override
+    public String toString() {
+        return rank + " of " + suit;
+    }
+
+    public CardRank getRank() {
+        return rank;
+    }
 }
