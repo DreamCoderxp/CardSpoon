@@ -19,16 +19,21 @@ import java.util.Collections;
  * The player class will also have a method to check if they have four of a kind cards.
  * Each player's turn is managed in the FourOfAKindGame class.
  */
-class FourOfAKindPlayer extends Player {
+
+
+    class FourOfAKindPlayer extends Player {
     private ArrayList<Card> hand;
+    private ArrayList<Card> initialHand; // Store the initial hand
 
     public FourOfAKindPlayer(String name) {
         super(name);
         hand = new ArrayList<>();
+        initialHand = new ArrayList<>();
     }
 
     public void addCardToHand(Card card) {
         hand.add(card);
+        initialHand.add(card); // Also add to the initial hand
     }
 
     public void discardCard(Card discardedCard) {
@@ -39,6 +44,7 @@ class FourOfAKindPlayer extends Player {
         if (hand.size() < 4) {
             return false;
         }
+
 
         for (int i = 0; i < hand.size(); i++) {
             int count = 1;
@@ -56,5 +62,8 @@ class FourOfAKindPlayer extends Player {
 
     public ArrayList<Card> getHand() {
         return hand;
+    }
+    public ArrayList<Card> getInitialHand() {
+        return initialHand;
     }
 }

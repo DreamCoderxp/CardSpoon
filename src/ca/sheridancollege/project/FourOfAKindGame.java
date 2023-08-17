@@ -19,7 +19,7 @@ import java.util.Scanner;
 
 public class FourOfAKindGame extends Game {
 
-   private Deck deck = new Deck();
+    private Deck deck = new Deck();
     private final ArrayList<FourOfAKindPlayer> players = new ArrayList<>();
 
     public FourOfAKindGame(int numPlayers) {
@@ -63,19 +63,35 @@ public class FourOfAKindGame extends Game {
 
     private void performPlayerTurn(FourOfAKindPlayer player) {
         System.out.println(player.getName() + "'s turn:");
+
+        // Display the player's initial four cards
+        System.out.println(player.getName() + "'s initial hand: " + player.getInitialHand());
+
+        // Display the current number of cards in the player's hand
+        System.out.println(player.getName() + "'s current hand (" + player.getHand().size() + " cards): " + player.getHand());
+
         Card drawnCard = deck.drawCard();
         player.addCardToHand(drawnCard);
         System.out.println(player.getName() + " draws: " + drawnCard);
+
         System.out.print(player.getName() + ", do you want to keep the card? (yes/no): ");
         Scanner scanner = new Scanner(System.in);
         String decision = scanner.nextLine();
         if (decision.equalsIgnoreCase("no")) {
-            System.out.print(player.getName() + ", which card do you want to discard? (enter card index): ");
-            int cardIndex = scanner.nextInt();
-            if (cardIndex >= 0 && cardIndex < player.getHand().size()) {
-                Card discardedCard = player.getHand().get(cardIndex);
-                player.discardCard(discardedCard);
-                deck.addCardToDiscardPile(discardedCard);
+            boolean validIndex = false;
+            while (!validIndex) {
+                System.out.print(player.getName() + ", which card do you want to discard? (enter card index): ");
+                int cardIndex = scanner.nextInt();
+
+                // Validate the input
+                if (cardIndex >= 0 && cardIndex < player.getHand().size()) {
+                    Card discardedCard = player.getHand().get(cardIndex);
+                    player.discardCard(discardedCard);
+                    deck.addCardToDiscardPile(discardedCard);
+                    validIndex = true; // Exit the loop if index is valid
+                } else {
+                    System.out.println("Invalid card index. Please enter an index between 0 and " + (player.getHand().size() - 1) + ".");
+                }
             }
         }
     }
